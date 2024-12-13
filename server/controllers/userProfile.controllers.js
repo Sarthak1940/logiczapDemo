@@ -289,6 +289,37 @@ exports.updateAdditionalDetails = async (req, res) => {
         await profile.save();
         return res.status(200).json({message: "Additional details updated successfully", profile});
     } catch (error) {
+        console.log(error);
         return res.status(500).json({message: "Error updating additional links"});
+    }
+}
+
+exports.updateSalary = async (req, res) => {
+    const {minSalary, maxSalary} = req.body;
+
+    const id = req.user.profile;
+
+    try {
+        const profile = await UserProfile.findOneAndUpdate({_id: id}, {
+            expectedSalary: {min: minSalary, max: maxSalary}
+        }, {new: true});
+
+        return res.status(200).json({message: "Salary updated successfully", profile});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message: "Error updating salary"});
+    }
+}
+
+exports.updateAbout = async (req, res) => {
+    const {about} = req.body;
+    const id = req.user.profile;
+
+    try {
+        await UserProfile.findOneAndUpdate({_id: id}, {about}, {new: true});
+        return res.status(200).json({message: "About updated successfully", about});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({message: "Error updating about"});
     }
 }

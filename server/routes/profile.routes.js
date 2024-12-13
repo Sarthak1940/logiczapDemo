@@ -1,5 +1,5 @@
 const express = require('express');
-const { addEducation, addWorkExperience, addSkill, updateEducation, updateWorkExperience, updateSkill, deleteEducation, deleteWorkExperience, deleteSkill, updateProfile, updateName, deleteProject, updateProject, addProject, updateAdditionalDetails } = require('../controllers/userProfile.controllers');
+const { addEducation, addWorkExperience, addSkill, updateEducation, updateWorkExperience, updateSkill, deleteEducation, deleteWorkExperience, deleteSkill, updateProfile, updateName, deleteProject, updateProject, addProject, updateAdditionalDetails, updateSalary, updateAbout } = require('../controllers/userProfile.controllers');
 const { verifyjwt } = require('../middleware/auth');
 const {upload} = require("../middleware/multer");
 
@@ -8,6 +8,8 @@ const router = express.Router();
 // update profile
 router.post("/updateProfile", verifyjwt, upload.array("files"), updateProfile);
 router.post("/updateAdditionalDetails", verifyjwt, updateAdditionalDetails);
+router.post("updateSalary", verifyjwt, updateSalary);
+router.post("/updateAbout", verifyjwt, updateAbout);
 
 // creating profile
 router.post("/addEducation", verifyjwt, addEducation);

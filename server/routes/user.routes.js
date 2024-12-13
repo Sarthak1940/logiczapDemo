@@ -1,6 +1,6 @@
 const express = require('express');
 const router =express.Router()
-const {signupHandler, loginHandler, logoutHandler, sendOtpHandler, getFullUser, updateProfileImage, updateCoverImage, getAllUsers, getLastSeen, search, getUserByUsername, getUserById} = require("../controllers/user.controllers");
+const {signupHandler, loginHandler, logoutHandler, sendOtpHandler, getFullUser, updateProfileImage, updateCoverImage, getAllUsers, getLastSeen, search, getUserByUsername, getUserById, updateAddress, searchBasedOnName} = require("../controllers/user.controllers");
 const {verifyjwt} = require("../middleware/auth");
 const { resetPasswordToken, resetPassword } = require('../controllers/resetPassword.controllers');
 const {upload} = require("../middleware/multer");
@@ -19,5 +19,7 @@ router.get("/getAllUsers", getAllUsers);
 router.post("/lastSeen", verifyjwt, getLastSeen);
 router.get("/username/:username", getUserByUsername);
 router.get("/id/:id", getUserById);
+router.post("/updateAddress", verifyjwt, updateAddress);
+router.get("/searchName", verifyjwt, searchBasedOnName);
 
 module.exports = router;

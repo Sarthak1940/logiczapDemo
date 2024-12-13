@@ -239,7 +239,7 @@ exports.search = async (req, res) => {
       minExpectedSalary,
       maxExpectedSalary,
       page = 1,
-      limit = 8
+      limit = 5
     } = req.body;
 
     const skip = (page-1)*limit;
@@ -411,6 +411,38 @@ exports.getUserById = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Could not get user"});
+    }
+}
+
+exports.updateAddress = async (req, res) => {
+    const {country, state, city, pincode} = req.body;
+
+    try {
+        const user = await User.findByIdAndUpdate(req.user._id, {country, state, city, pincode}, {new: true}).select("-password");
+
+        return res.status(200).json({message: "Address updated", user});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Error updating address"});
+        
+    }
+}
+
+exports.searchBasedOnName = async (req, res) => {
+    const {filter} = req.query || "";
+    const {page = 1, limit = 5} = req.query;
+
+    const skip = (page-1)*limit;
+
+    try {
+        const users = await User.find({
+            name: { $regex: filter, $options: "i" }
+        }).skip(skip).limit(limit).select("-password");
+
+        return res.status(200).json({users});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Error searching users"});
     }
 }
 
